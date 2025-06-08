@@ -3,9 +3,9 @@
   "theme": "maple",
   "name": "Zyntex Documentation",
   "colors": {
-    "primary": "#5443f7",
-    "light": "#07C983",
-    "dark": "#161b2a"
+    "primary": "#FFFFFF",
+    "light": "#FFFFFF",
+    "dark": "#FFFFFF"
   },
   "favicon": "/favicon.ico",
   "navigation": {
