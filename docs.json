@@ -51,7 +51,7 @@
                 {
                     "anchor": "Dashboard",
                     "href": "https://dashboard.zyntex.dev/",
-                    "icon": "panel-top"
+                    "icon": "browser"
                 }
             ]
         }
