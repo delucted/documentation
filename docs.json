@@ -54,8 +54,8 @@
         }
     },
     "logo": {
-        "light": "/logo/zyntex-indigo.png",
-        "dark": "/logo/zyntex-indigo.png"
+        "light": "/logo/zyntex-docs.png",
+        "dark": "/logo/zyntex-docs.png"
     },
     "navbar": {
         "links": [
