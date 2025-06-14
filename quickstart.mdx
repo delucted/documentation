@@ -27,21 +27,6 @@ local Zyntex = require(path.to.zyntex)("YOUR-GAME-TOKEN")
 Zyntex:init({
   debug = true;
 })
-
-local myEvent = Zyntex:GetEvent("eventName")
-
-myEvent.Invoke:Connect(function()
-  print("myEvent invoked from the dashboard!")
-end)
-
-myEvent:Invoke({
- {
-   ["key"]   = "Body",
-   ["value"] = "myEvent invoked from Roblox!"
- } 
-})
-
-Zyntex:Log("This is a log from Roblox.")
 ```
 
 ### Line 1
@@ -55,7 +40,3 @@ Now, you are initialising the Zyntex object. This will connect all hooks (i.e. Z
 #### Config options:
 
 `debug: boolean` = If set to true, Zyntex SDK will display verbose logging to the standard output. Useful when debugging with support.
-
-### Line 7
-
-Now things are getting interesting. Zyntex:GetEvent(eventName: string) gets an event by it's name, assuming it is created on the Dashboard. To learn more about events please click [here](/events).
