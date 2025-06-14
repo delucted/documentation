@@ -17,29 +17,26 @@
                         "group": "Get Started",
                         "pages": [
                             "index",
+                            "download",
                             "quickstart"
                         ]
                     },
                     {
                         "group": "Events",
                         "pages": [
-                            "events/create",
-                            "events/update",
-                            "events/webhooks"
+                            "events"
                         ]
                     },
                     {
                         "group": "Logs",
                         "pages": [
-                            "logs/view",
-                            "logs/create"
+                            "logs"
                         ]
                     },
                     {
                         "group": "Moderation",
                         "pages": [
-                            "moderation/view",
-                            "moderation/create",
+                            "moderation",
                             "moderation/reputation"
                         ]
                     }
