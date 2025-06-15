@@ -1,73 +1,59 @@
 {
-    "$schema": "https://mintlify.com/docs.json",
-    "theme": "maple",
-    "name": "Zyntex Documentation",
-    "colors": {
-        "primary": "#8166f3",
-        "light": "#8166f3",
-        "dark": "#8166f3"
-    },
-    "favicon": "/favicon.ico",
-    "navigation": {
-        "tabs": [
-            {
-                "tab": "Guides",
-                "groups": [
-                    {
-                        "group": "Get Started",
-                        "pages": [
-                            "index",
-                            "download",
-                            "quickstart"
-                        ]
-                    },
-                    {
-                        "group": "Events",
-                        "pages": [
-                            "events/index"
-                        ]
-                    },
-                    {
-                        "group": "Logs",
-                        "pages": [
-                            "logs/index"
-                        ]
-                    },
-                    {
-                        "group": "Moderation",
-                        "pages": [
-                            "moderation/index",
-                            "moderation/reputation"
-                        ]
-                    }
-                ]
-            }
-        ],
-        "global": {
-            "anchors": [
-                {
-                    "anchor": "Dashboard",
-                    "href": "https://dashboard.zyntex.dev/",
-                    "icon": "browser"
-                }
-            ]
-        }
-    },
-    "logo": {
-        "light": "/logo/zyntex-docs.png",
-        "dark": "/logo/zyntex-docs.png"
-    },
-    "navbar": {
-        "links": [
-            {
-                "label": "Support",
-                "href": "mailto:support@zyntex.dev"
-            }
-        ],
-        "primary": {
-            "type": "button",
-            "label": "Dashboard",
-            "href": "https://dashboard.zyntex.dev"
-        }
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Zyntex Documentation",
+  "logo": {
+    "dark": "/logo/zyntex-docs.png",
+    "light": "/logo/zyntex-docs.png"
+  },
+  "favicon": "/favicon.ico",
+  "colors": {
+    "primary": "#8166f3",
+    "light": "#8166f3",
+    "dark": "#8166f3"
+  },
+  "topbarLinks": [
+    {
+      "name": "Support",
+      "url": "mailto:support@zyntex.dev"
     }
+  ],
+  "topbarCtaButton": {
+    "name": "Dashboard",
+    "url": "https://dashboard.zyntex.dev"
+  },
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": [
+        "index",
+        "quickstart",
+        "download"
+      ]
+    },
+    {
+      "group": "Events", 
+      "pages": [
+        "events/index"
+      ]
+    },
+    {
+      "group": "Moderation",
+      "pages": [
+        "moderation/index",
+        "moderation/reputation"
+      ]
+    },
+    {
+      "group": "Logs",
+      "pages": [
+        "logs/index"
+      ]
+    },
+    {
+      "group": "Developers",
+      "pages": [
+        "developers/index"
+      ]
+    }
+  ]
 }

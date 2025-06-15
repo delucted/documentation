@@ -17,5 +17,20 @@ Zyntex provides a powerful moderation system that allows you to manage your play
 To moderate a player, you can use the Zyntex dashboard. Navigate to the **Players** tab in the Zyntex dashboard after selecting a game. Here, you can see all players currently in your game.
 You can filter for players by their username, user ID, and sort them by their last activity, reputation, and more.
 Once you find the player you want to moderate, click on their username to open their profile. Here, you can see their activity, reputation, and other information.
+To create a new moderation, click the **+ New Moderation** button at the end of the player list. You will be prompted to select a moderation type, enter a reason, and optionally set an expiration date for the moderation.
 
-From this profile, you can take various actions, such as banning or muting the player, viewing their report history, and more.
+<img
+  className="block"
+  src="/images/moderate-player-modal.png"
+  alt="New Moderation Modal"
+  title={true} />
+
+### Moderation types
+- **Ban**: Permanently bans the player from your game. They will not be able to join until the moderation expires.
+- **Kick**: Kicks the player from your game. They will be able to rejoin.
+- **Mute**: Mutes the player, preventing them from sending messages in the game chat. They will still be able to join and play.
+- **Report**: Allows players to report others for inappropriate behavior. You can review these reports and take action as needed.
+
+<Info>
+    The moderation type enums are as follows: 'ban', 'kick', 'mute', and 'report'. You can use these enums in the Zyntex SDK to create and manage moderations programmatically.
+</Info>
