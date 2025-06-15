@@ -1,59 +1,60 @@
 {
-  "$schema": "https://mintlify.com/schema.json",
-  "name": "Zyntex Documentation",
-  "logo": {
-    "dark": "/logo/zyntex-docs.png",
-    "light": "/logo/zyntex-docs.png"
-  },
-  "favicon": "/favicon.ico",
-  "colors": {
-    "primary": "#8166f3",
-    "light": "#8166f3",
-    "dark": "#8166f3"
-  },
-  "topbarLinks": [
-    {
-      "name": "Support",
-      "url": "mailto:support@zyntex.dev"
-    }
-  ],
-  "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.zyntex.dev"
-  },
-  "navigation": [
-    {
-      "group": "Getting Started",
-      "pages": [
-        "index",
-        "quickstart",
-        "download"
-      ]
+    "$schema": "https://mintlify.com/schema.json",
+    "name": "Zyntex Documentation",
+    "theme": "maple",
+    "logo": {
+        "dark": "/logo/zyntex-docs.png",
+        "light": "/logo/zyntex-docs.png"
     },
-    {
-      "group": "Events", 
-      "pages": [
-        "events/index"
-      ]
+    "favicon": "/favicon.ico",
+    "colors": {
+        "primary": "#8166f3",
+        "light": "#8166f3",
+        "dark": "#8166f3"
     },
-    {
-      "group": "Moderation",
-      "pages": [
-        "moderation/index",
-        "moderation/reputation"
-      ]
+    "topbarLinks": [
+        {
+            "name": "Support",
+            "url": "mailto:support@zyntex.dev"
+        }
+    ],
+    "topbarCtaButton": {
+        "name": "Dashboard",
+        "url": "https://dashboard.zyntex.dev"
     },
-    {
-      "group": "Logs",
-      "pages": [
-        "logs/index"
-      ]
-    },
-    {
-      "group": "Developers",
-      "pages": [
-        "developers/index"
-      ]
-    }
-  ]
+    "navigation": [
+        {
+            "group": "Getting Started",
+            "pages": [
+                "index",
+                "quickstart",
+                "download"
+            ]
+        },
+        {
+            "group": "Events",
+            "pages": [
+                "events/index"
+            ]
+        },
+        {
+            "group": "Moderation",
+            "pages": [
+                "moderation/index",
+                "moderation/reputation"
+            ]
+        },
+        {
+            "group": "Logs",
+            "pages": [
+                "logs/index"
+            ]
+        },
+        {
+            "group": "Developers",
+            "pages": [
+                "developers/index"
+            ]
+        }
+    ]
 }
