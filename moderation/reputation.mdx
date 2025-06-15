@@ -36,13 +36,13 @@ Zyntex tracks reputation in two forms: **Reputation** and **Raw Reputation**.
 </Warning>
 
 <Tip>
-    ### How is the reputation calculated?
-    Each reputation event has a weight associated with it:
+### How is the reputation calculated?
+Each reputation event has a weight associated with it:
     - **Ban:** 5
     - **Kick:** 3
     - **Mute:** 2
     - **Report:** 1\
-    The raw reputation is calculated by summing the weights of all reputation events for a player. The enum reputation is then derived from the raw reputation value.
+The raw reputation is calculated by summing the weights of all reputation events for a player. The enum reputation is then derived from the raw reputation value.
     - `raw reputation < 3` = `clean`
     - `raw reputation >= 3 and <= 10` = `suspect`
     - `raw reputation > 10` = `offender`
