@@ -24,19 +24,19 @@
                     {
                         "group": "Events",
                         "pages": [
-                            "events"
+                            "events/index"
                         ]
                     },
                     {
                         "group": "Logs",
                         "pages": [
-                            "logs"
+                            "logs/index",
                         ]
                     },
                     {
                         "group": "Moderation",
                         "pages": [
-                            "moderation",
+                            "moderation/index",
                             "moderation/reputation"
                         ]
                     }
