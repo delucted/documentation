@@ -11,7 +11,7 @@ It tracks player behavior across all Zyntex experiences, allowing you to take ac
     ### Plan limits
     To ensure the integrity of the reputation system, we have set limits based on your plan.
     - Moderations done by games who's owner is on the Free plan will not be counted towards the reputation system. You can still moderate players, but their reputation will not be updated.
-    - Only the Standard and Enterprise plans will have their moderations counted towards the reputation system.
+    - Only the Standard and Enterprise plans will have their moderations counted towards the reputation system, unless the `test` parameter is set to `true` when creating a new moderation.
 </Note>
 
 ## Viewing Reputation
@@ -29,7 +29,7 @@ Zyntex tracks reputation in two forms: **Reputation** and **Raw Reputation**.
 
 <Warning>
     ### Don't abuse the reputation system
-    The reputationn system is designed to help Zyntex developers identify problematic players before they become a significant issue.\
+    The reputation system is designed to help Zyntex developers identify problematic players before they become a significant issue.\
     If you abuse the reputation system by giving players a bad reputation for no reason, you will be banned from using the reputation system.\
     We also recommend that you implement safeguards in your game to prevent players from being able to abuse the reputation system.\
     For example, add a rate limit to the number of times a player can be reported in a certain time period, or require players to have a certain level of activity before they can report others.
@@ -41,7 +41,7 @@ Zyntex tracks reputation in two forms: **Reputation** and **Raw Reputation**.
     - **Ban:** 5
     - **Kick:** 3
     - **Mute:** 2
-    - **Report:** 1
+    - **Report:** 1\
     The raw reputation is calculated by summing the weights of all reputation events for a player. The enum reputation is then derived from the raw reputation value.
     - `raw reputation < 3` = `clean`
     - `raw reputation >= 3 and <= 10` = `suspect`

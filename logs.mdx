@@ -1,0 +1,62 @@
+---
+title: "Logs"
+description: "Learn all you need to know about Zyntex's logging system."
+---
+
+## Logs
+Zyntex's logging system is designed to help you keep track of your game's activity and player behavior. It allows you to create custom logs, view live logs, and analyze player and server activity in real-time.
+
+<Note>
+    ### Log retention
+    Logs have different retention periods based on your plan:
+    - **Free Plan:** 1 day
+    - **Standard Plan:** 7 days
+    - **Enterprise Plan:** 30 days
+    After the retention period, logs will be automatically deleted.
+</Note>
+
+### Use cases
+1. **Server Activity Tracking:** Monitor server activity, such as chest openings.
+2. **Debug:** Use logs to debug your game and track down issues.
+3. **Player Behavior Analysis:** Analyze player behavior to improve your game and create better experiences.
+
+<Tip>
+    ### Difference between logs and events
+    Logs and events are both used to track activity in your game, but they serve different purposes:
+    - **Logs** are used to track activity in your game, such as server activity and player behavior. They are designed to be used for debugging and analysis.
+    - **Events** are used to trigger actions in your game, such as activating a live event or sending a Discord webhook. They are designed to be used for real-time interactions and notifications.
+</Tip>
+
+## Viewing logs
+To view logs in the Zyntex dashboard, navigate to the **Logs** tab after selecting a game. Here, you can see all logs related to your game (updating live), including player activity and server events. You can filter logs by date, player, and event type to find specific logs.\
+You can also view logs for specific players by navigating to the **Players** tab and clicking on a player's username. This will open their profile, where you can see their activity, reputation, and logs.\
+You can also view logs for specific servers by navigating to the **Servers** tab and clicking on a server's ID. This will open the server's profile, where you can see its activity, players, and logs.
+
+## SDK Integration
+### Creating a log
+To create a log in the Zyntex Roblox SDK, you can use the `Zyntex:Log` method. This method takes the log message and an optional player object as arguments. If a player object is provided, the log will be associated with that player.
+
+```luau highlight={7-11}
+local Zyntex = require(path.to.zyntex)("YOUR-GAME-TOKEN")
+
+Zyntex:init({
+    debug = false;
+})
+
+game:GetService("Players").PlayerAdded:Connect(function(player)
+    -- Log a player joining the game
+    -- This is done automatically by the SDK, but this is an example of how to create a custom log
+    Zyntex:Log(`{player.Name} joined the game`, player)
+end)
+```
+
+<Note>
+    A lot of actions are already logged automatically by the SDK, such as player joins, player leaves, and server activity.\
+    You can view these logs in the Zyntex dashboard under the **Logs** tab after selecting a game, or by viewing the **Servers** tab, or the **Players** tab.
+</Note>
+
+<Info>
+    The `player` parameter is optional. If you do not provide a player object, the log will not be associated with the server. Otherwise, the log will be associated with the player who triggered the log.\
+    This is useful for tracking player-specific activity, such as when a player opens a chest or completes a level.
+</Info>
+
