@@ -15,8 +15,12 @@ Zyntex provides a powerful moderation system that allows you to manage your play
 
 ## Moderating a player
 To moderate a player, you can use the Zyntex dashboard. Navigate to the **Players** tab in the Zyntex dashboard after selecting a game. Here, you can see all players currently in your game.
+<br />
 You can filter for players by their username, user ID, and sort them by their last activity, reputation, and more.
+<br />
 Once you find the player you want to moderate, click on their username to open their profile. Here, you can see their activity, reputation, and other information.
+
+<br />
 To create a new moderation, click the **+ New Moderation** button at the end of the player list. You will be prompted to select a moderation type, enter a reason, and optionally set an expiration date for the moderation.
 
 <img
@@ -32,5 +36,70 @@ To create a new moderation, click the **+ New Moderation** button at the end of 
 - **Report**: Allows players to report others for inappropriate behavior. You can review these reports and take action as needed.
 
 <Info>
-    The moderation type enums are as follows: 'ban', 'kick', 'mute', and 'report'. You can use these enums in the Zyntex SDK to create and manage moderations programmatically.
+    The moderation type enums are as follows: `ban`, `kick`, `mute`, and `report`. You can use these enums in the Zyntex SDK to create and manage moderations programmatically.
 </Info>
+
+## Viewing moderations
+### Game moderations
+To view all moderations in your game, navigate to the **Moderations** tab in the Zyntex dashboard after selecting a game. Here, you can see all active and deleted moderations. You can filter by moderation type, player, and more. All moderations appearing in this page will be live.
+### Player moderations
+To view a player's moderations, navigate to the **Players** tab in the Zyntex dashboard after selecting a game. Here, you can see all players currently in your game. Click on a player's username to open their profile. In the profile, you can see all active and deleted moderations for that player.
+### Public player moderations
+To view a player's public moderations, navigate to the **[Players](https://dashboard.zyntex.dev/players)** page. Here, you can see all players currently in your game. Click on a player's username to open their profile. In the profile, you can see all public moderations for that player.
+
+## SDK Integration
+### Creating a moderation
+To create a moderation in the Zyntex Roblox SDK, you can use the `Zyntex:ModeratePlayer` method. This method takes the player's user ID, moderation type, reason, and optional expiration date as arguments.
+
+```luau highlight={7-11}
+local Zyntex = require(path.to.zyntex)("YOUR-GAME-TOKEN")
+
+Zyntex:init({
+    debug = false;
+})
+
+game:GetService("Players").PlayerAdded:Connect(function(player)
+  -- Can also be :Kick, :Mute, or :Report
+  Zyntex:Ban(player, "Disruptive behavior", DateTime.fromIsoDate("2026-10-01T12:00:00Z")) -- Ban the player until the specified date
+end)
+```
+
+<Tip>
+  All moderations applied in Studio will automatically be considered as a `test`. 
+  <br />
+  This means that they will not permanently affect the player's reputation.
+</Tip>
+
+### Listening to moderations
+If an administrator moderates a player from the dashboard, you can listen to the moderation event in the Zyntex Roblox SDK. This event is fired whenever a player is moderated.
+
+```luau highlight={3-8}
+local Zyntex = require(path.to.zyntex)("YOUR-GAME-TOKEN")
+
+-- Can also be :OnKick or :OnMute
+Zyntex:OnBan(function(player: Player, reason: string)
+  local player = game:GetService("Players"):GetPlayerByUserId(player.UserId)
+  -- Moderation actions are fired to ALL servers, regardless of if the player is in the server or not.
+  if player then
+    player:Kick(reason)
+  end
+end)
+
+Zyntex:init({
+    debug = false;
+})
+```
+
+<Warning>
+  We highly recommend that you hook onto the moderation event (`:OnBan`, `:OnKick`, or `:OnMute`) **before** you call `Zyntex:init()`.
+  <br />
+  This ensures that your moderation hooks are set up before the Zyntex SDK processes current players in the game.
+  <br />
+  Otherwise, players who are already in the game will be moderated without your hooks being called.
+</Warning>
+
+<Note>
+  The Zyntex SDK has default moderation hooks that will automatically ban, kick, or mute players when they are moderated from the dashboard.
+  <br />
+  When you call `Zyntex:OnBan`, `Zyntex:OnKick`, or `Zyntex:OnMute`, you are overriding the default behavior.
+</Note>
