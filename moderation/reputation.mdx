@@ -7,12 +7,92 @@ description: 'Learn all about the Zyntex reputation system and how to use it.'
 Zyntex's reputation system is designed to help game developers identify problematic players before they become a significant issue.\
 It tracks player behavior across all Zyntex experiences, allowing you to take action based on their reputation.
 
-### Use cases
-1. **Player Behavior Tracking:** Monitor player behavior across all Zyntex experiences to identify potential issues.
-2. **Proactive Moderation:** Take action against players with troubling behavior before they become a problem in your game.
-3. **Reputation-Based Actions:** Implement actions based on player reputation, such as restricting access to certain features or games.
+<Note>
+    ### Plan limits
+    To ensure the integrity of the reputation system, we have set limits based on your plan.
+    - Moderations done by games who's owner is on the Free plan will not be counted towards the reputation system. You can still moderate players, but their reputation will not be updated.
+    - Only the Standard and Enterprise plans will have their moderations counted towards the reputation system.
+</Note>
 
 ## Viewing Reputation
 To view a player's reputation, navigate to the **Players** tab in the Zyntex dashboard after selecting a game. Here, you can see all players currently in your game.\
 You can filter for players by their username, user ID, and sort them by their last activity, reputation, and more.\
 Once you find the player you want to view, click on their username to open their profile. Here, you can see their activity, reputation, and other information.
+
+## Reputation types
+Zyntex tracks reputation in two forms: **Reputation** and **Raw Reputation**.
+- **Reputation:** This is the player's reputation as an enum. It can be one of the following values:
+  - `clean`: This player's reputation should not be a concern.
+  - `suspect`: This player has caused some concern in games. Deal with them at your own risk.
+  - `offender`: This player has repeatedly caused severe issues in games. They should be avoided.
+- **Raw Reputation:** This is the player's reputation as a numeric value. It can be any integer between `0` and `+infinity`, and is used for more granular reputation tracking. The higher the value, the worse the player's reputation is.
+
+<Warning>
+    ### Don't abuse the reputation system
+    The reputationn system is designed to help Zyntex developers identify problematic players before they become a significant issue.\
+    If you abuse the reputation system by giving players a bad reputation for no reason, you will be banned from using the reputation system.\
+    We also recommend that you implement safeguards in your game to prevent players from being able to abuse the reputation system.\
+    For example, add a rate limit to the number of times a player can be reported in a certain time period, or require players to have a certain level of activity before they can report others.
+</Warning>
+
+<Tip>
+    ### How is the reputation calculated?
+    Each reputation event has a weight associated with it:
+    - **Ban:** 5
+    - **Kick:** 3
+    - **Mute:** 2
+    - **Report:** 1
+    The raw reputation is calculated by summing the weights of all reputation events for a player. The enum reputation is then derived from the raw reputation value.
+    - `raw reputation < 3` = `clean`
+    - `raw reputation >= 3 and <= 10` = `suspect`
+    - `raw reputation > 10` = `offender`
+</Tip>
+
+## SDK Integration
+### Getting a Player's Reputation
+To get a player's reputation in the Zyntex Roblox SDK, you can use the `Zyntex:GetPlayerInfo` method. This method fetches player information, including their reputation.
+
+```luau highlight={7-22} Auto kick offenders
+local Zyntex = require(path.to.zyntex)("YOUR-GAME-TOKEN")
+
+Zyntex:init({
+    debug = false;
+})
+
+game:GetService("Players").PlayerAdded:Connect(function(player)
+    local playerInfo = Zyntex:GetPlayerInfo(player.UserId)
+    if playerInfo.player.reputation == "offender" then
+        player:Kick("You have been kicked due to your reputation.")
+    end
+
+    print(`Player ID: {playerInfo.player.id}`)
+    print(`Player Name: {playerInfo.player.name}`)
+    print(`Player Avatar URL: {playerInfo.player.avatar_url}`)
+    print(`Player Avatar URL Cache Expiry: {playerInfo.player.avatar_url_cache_expiry}`)
+    print(`Player Reputation: {playerInfo.player.reputation}`)
+    print(`Player Raw Reputation: {playerInfo.player.raw_reputation}`)
+
+    print(`Total Robux Spent: {playerInfo.total_robux_spent}`)
+    print(`Total Time Played: {playerInfo.total_time_played} seconds`)
+end)
+```
+
+<Danger>
+    ### Don't create moderations in the reputation test
+    Doing so will inflate the player's reputation just because they joined your game.\
+    Instead, call `Player:Kick` without creating a new moderation.
+</Danger>
+
+<Tip>
+    ### What does the `Zyntex:GetPlayerInfo` method return?
+    The `Zyntex:GetPlayerInfo` method returns a table with the following structure:
+    - `player`: A ZyntexPlayer object containing the player's information:
+        - `id`: The player's unique ID.
+        - `name`: The player's username.
+        - `avatar_url`: The URL of the player's avatar.
+        - `avatar_url_cache_expiry`: The time when the avatar URL will expire and need to be refreshed.
+        - `reputation`: The player's reputation as an enum (`clean`, `suspect`, or `offender`).
+        - `raw_reputation`: The player's raw reputation as an integer.
+    - `total_robux_spent`: The total amount of Robux spent by the player across all Zyntex experiences.
+    - `total_time_played`: The total time played by the player across all Zyntex experiences, in seconds.
+</Tip>

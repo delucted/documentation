@@ -60,6 +60,12 @@ game:GetService("Players").PlayerAdded:Connect(function(player)
 end)
 ```
 
+<Danger>
+  If your game's owner is on the Standard or Enterprise plan, the moderation will be counted towards the player's reputation.\
+  If you don't want the moderation to affect the player's reputation, you can set the `test` parameter to `true` when creating a new moderation.\
+  Moderations from the Dashboard are always going to affect the player's reputation.\
+</Danger>
+
 <Tip>
   All moderations applied in Studio will automatically be considered as a `test`.\
   This means that they will not permanently affect the player's reputation.
@@ -68,7 +74,7 @@ end)
 ### Listening to moderations
 If an administrator moderates a player from the dashboard, you can listen to the moderation event in the Zyntex Roblox SDK. This event is fired whenever a player is moderated.
 
-```luau highlight={3-8}
+```luau highlight={3-10}
 local Zyntex = require(path.to.zyntex)("YOUR-GAME-TOKEN")
 
 -- Can also be :OnKick or :OnMute
@@ -91,7 +97,7 @@ Zyntex:init({
   Otherwise, players who are already in the game will be moderated without your hooks being called.
 </Warning>
 
-<Note>
-  The Zyntex SDK has default moderation hooks that will automatically ban, kick, or mute players when they are moderated from the dashboard.\  
+<Info>
+  The Zyntex SDK has default moderation hooks that will automatically ban, kick, or mute players when they are moderated from the dashboard.\
   When you call `Zyntex:OnBan`, `Zyntex:OnKick`, or `Zyntex:OnMute`, you are overriding the default behavior.
-</Note>
+</Info>
