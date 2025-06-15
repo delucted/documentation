@@ -41,6 +41,12 @@
                         ]
                     },
                     {
+                        "group": "Economy",
+                        "pages": [
+                            "purchases"
+                        ]
+                    },
+                    {
                         "group": "Developers",
                         "pages": [
                             "developers"

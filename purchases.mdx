@@ -1,0 +1,41 @@
+---
+title: 'Purchases'
+description: 'Learn how to use the Zyntex SDK to log purchases in your Roblox game'
+---
+
+## Purchases
+Zyntex allows you to log purchases made within your game.\
+After setting up the purchase logging, you can enjoy aggregated purchase data in the Zyntex dashboard, which can be used to analyze player spending habits and game monetization.
+
+## Viewing purchases
+To view purchases in the Zyntex dashboard, navigate to the **Logs** tab after selecting a game. Set the filter to `info.player.purchase` to see all purchase logs related to your game.\
+You can filter purchases by player, price, and metadata to find specific purchases.
+
+## SDK Integration
+### Creating a purchase log
+To create a purchase log in the Zyntex Roblox SDK, you can use the `Zyntex:ProcessPurchase` method. This method takes the purchase details as arguments, including the player who made the purchase, the price of the purchase, and the product name.
+
+```luau highlight={15-16}
+local Zyntex = require(path.to.zyntex)("YOUR-GAME-TOKEN")
+
+Zyntex:init({
+    debug = false;
+})
+
+local MarketplaceService = game:GetService("MarketplaceService")
+
+MarketplaceService.ProcessReceipt = function(receiptInfo)
+    local player = game:GetService("Players"):GetPlayerByUserId(receiptInfo.PlayerId)
+    if not player then
+        return Enum.ProductPurchaseDecision.NotProcessedYet
+    end
+
+    -- Log the purchase
+    Zyntex:ProcessPurchase(player, receiptInfo.CurrencySpent, "Product Name")
+
+    -- Conduct your purchase logic here
+    -- For example, give the player the purchased item or currency
+
+    return Enum.ProductPurchaseDecision.PurchaseGranted
+end
+```
