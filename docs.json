@@ -30,7 +30,7 @@
                     {
                         "group": "Logs",
                         "pages": [
-                            "logs/index",
+                            "logs/index"
                         ]
                     },
                     {
