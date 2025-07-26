@@ -1,0 +1,29 @@
+---
+
+title: 'Summary'
+description: 'Distribution summaries for percentile/quantile views.'
+---
+
+**Summaries** are distribution metrics optimized for **quantiles** (e.g., p50, p90, p99). They also support labels for slicing.
+
+## Create and observe
+
+```luau
+local Telemetry = Zyntex:Telemetry(10)
+
+local levelTime = Telemetry:Summary("level_completion_seconds", {
+    description = "Time to complete the current level"
+})
+
+levelTime:observe(47.9, {level="3"})
+levelTime:observe(31.3, {level="3"})
+```
+
+## When to choose summary
+
+* You primarily care about **p50 / p90 / p99** rather than the full histogram.
+* **SLA/SLO** style monitoring (e.g., “99% of completions under 60s”).
+
+<Note>
+  In dashboards, choose a **percentile** view for Summary metrics to derive p50/p90/p99. If you need the **full shape** of the distribution, use a **Histogram** instead.
+</Note>

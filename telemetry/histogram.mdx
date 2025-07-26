@@ -1,0 +1,31 @@
+---
+
+title: 'Histogram'
+description: 'Distributions with optional buckets (damage, ping, time‑to‑kill).'
+---
+
+**Histograms** sample numeric values to visualize a distribution. Provide optional `buckets` to suggest how Zyntex groups values.
+
+## Create and observe
+
+```luau
+local Telemetry = Zyntex:Telemetry(10)
+
+-- Ping with custom buckets (ms)
+local ping = Telemetry:Histogram("ping_milliseconds", {
+    description = "Observed player RTT",
+    buckets = {25, 50, 75, 100, 150, 200, 300}
+})
+
+ping:observe(72)             -- one sample
+ping:observe(131, {region="EU"})
+```
+
+<Info>
+  Bucketing occurs on the **backend** so definitions can evolve without client updates. If you omit `buckets`, Zyntex applies backend bucketing automatically.
+</Info>
+
+## When to choose histogram
+
+* **Spread matters** more than the average: ping, damage, TTK, frame time.
+* You want **bar distributions** and bucketed **heatmaps** in dashboards.

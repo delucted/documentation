@@ -1,0 +1,126 @@
+---
+
+title: 'Functions'
+description: 'Two‑way calls from the Zyntex dashboard that return data from your Roblox server.'
+---
+
+**Functions** are like Events, but **two‑way**: they are **invoked from the Zyntex dashboard**, delivered to your Roblox server, and your code **returns a payload** back to Zyntex.
+
+Common uses:
+
+1. **On‑demand diagnostics:** Fetch current server memory, FPS, or a custom status bundle.
+2. **Player lookups:** Return a player’s inventory, progress, or moderation state.
+3. **Remote utilities:** Trigger an action and confirm results (e.g., run a server self‑check).
+
+## Plan limits
+
+Functions currently share the same limits as **Events**.
+
+## Creating a Function
+
+1. In your game’s Zyntex dashboard, open **Functions** and click **+ New Function**.
+2. Provide a **name**, **description**, and define any **parameters** (name + type).
+3. Save the function.
+
+<Info>
+  Functions are **invoked only from the web dashboard**. They are not callable from Roblox servers, although this is being worked on.
+</Info>
+
+## SDK Integration
+
+### Getting a Function
+
+Use `Zyntex:GetFunction("name")` or `Zyntex:GetFunctionByID(id)` to obtain a handle.
+
+```luau
+local Zyntex = require(path.to.zyntex)("YOUR-GAME-TOKEN")
+
+Zyntex:init({
+    debug = true;
+})
+
+local GetVitals = Zyntex:GetFunction("GetVitals")
+```
+
+### Listening for a Function
+
+Bind a callback with `:Connect(callback)`. When the dashboard invokes the function, your callback receives a **parameters table** and must **return a value** (table or primitive). That return value is sent back to Zyntex.
+
+```luau
+if GetVitals then -- make sure the function exists
+    GetVitals:Connect(function(params)
+        -- params is a simple table: { ["paramName"] = value }
+        local RunService = game:GetService("RunService")
+        local Stats = game:GetService("Stats")
+        local status = {
+            fps           = math.floor(1 / RunService.Heartbeat:Wait()),
+            memory_usage  = Stats:GetTotalMemoryUsageMb(),
+            server_id     = game.JobId,
+            since         = os.time()
+        }
+        return status
+    end)
+end
+```
+
+<Warning>
+  Your callback **must return a value**. The SDK asserts if no payload is returned.
+</Warning>
+
+### Example: Echo / Ping‑Pong
+
+```luau
+local Echo = Zyntex:GetFunction("Echo")
+
+if Echo then
+    Echo:Connect(function(parameters)
+        -- { message = "hello" }
+        return { reply = parameters.message, at = os.time() }
+    end)
+end
+```
+
+### Example: Player Snapshot
+
+```luau
+local Snapshot = Zyntex:GetFunction("PlayerSnapshot")
+
+if Snapshot then
+    Snapshot:Connect(function(p)
+        local playerId = tonumber(p.player_id)
+        local info = Zyntex:GetPlayerInfo(playerId)
+        return {
+            player       = { id = info.player.id, name = info.player.name, reputation = info.player.reputation },
+            robux_spent  = info.total_robux_spent,
+            time_played  = info.total_time_played
+        }
+    end)
+end
+```
+
+## Invoking from the Dashboard
+
+1. Open the Functions tab.
+2. Click **Invoke** on the function you want to call.
+3. Provide **parameter values**.
+4. Choose the **target server** and send. (Functions currently target **one specific server**.)
+
+You'll see the **returned payload** in the invocation’s detail, and any **errors** if the call fails.
+
+<Note>
+  If no eligible server is available, or your listener is not connected, the invocation cannot complete. Zyntex surfaces an error in the dashboard.
+</Note>
+
+## Limits & behavior
+
+* **Timeout:** \~15 minutes per invocation.
+* **Payload size:** The combined parameters + returned payload must be **< 64 KB**.
+* **Targeting:** Single server only.
+* **Concurrency:** Calls are **concurrent** (not queued). In practice, concurrent invocations should be rare.
+* **Security:** Functions are **web‑only** today. Server‑to‑server calls are in development.
+
+## Troubleshooting
+
+* **No payload received?** Ensure your `:Connect` callback returns a value (non‑nil).
+* **Timing out?** Verify the target server is active, the Function exists, and your listener is registered after `Zyntex:init(...)`.
+* **Validation errors?** Check parameter types from the dashboard match what your code expects.

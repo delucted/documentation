@@ -1,0 +1,82 @@
+---
+
+title: 'Dashboards'
+description: 'Build live graphs, tables, pies, and heatmaps from your Telemetry metrics.'
+---
+
+Zyntex dashboards let you visualize metrics in real time and share a live view across your team.
+
+## Creating a dashboard
+
+1. Open your game in the Zyntex dashboard.
+2. Navigate to **Analytics** → **New Dashboard**.
+3. Give it a **name** and **description** and click **Create**.
+
+## Adding panels
+
+Click **+ Add Panel**, then pick a **visualization**:
+
+* **Stat**: Counter totals or the latest Gauge value.
+* **Time‑series**: Great for Gauge values over time (CPU %, FPS).
+* **Bar**: Compare totals across a label (e.g., `{region}`).
+* **Pie**: Share of totals by label (device type).
+* **Table**: Latest values by label (e.g., ping per `{server_id}`).
+* **Heatmap**: Spatial buckets (x/z bins) or histogram bucket heatmaps.
+
+### Bind to a metric
+
+* Choose a **metric** (e.g., `players_online_total`, `ping_milliseconds`).
+* (Optional) Pick **labels** to **group by** (e.g., `region`, `device`, `server_id`).
+* (Optional) Configure **aggregations** (sum, avg, min, max, rate) and **time range**.
+
+<Note>
+  **Counters** often pair with `rate()` or `sum()` depending on chart type. **Gauges** use the latest sample; choose **avg** for smoother lines.
+</Note>
+
+## Querying panels with Mini‑PromQL
+
+Zyntex supports a simplified PromQL for panel queries. See the full PromQL docs: **[PromQL documentation](https://prometheus.io/docs/prometheus/latest/querying/basics/)**.
+
+**Common patterns**
+
+```promql
+sum by (region) (players_joined_total)
+```
+
+```promql
+rate(players_joined_total[5m])
+```
+
+```promql
+avg_over_time(cpu_utilisation_percent{core="Main"}[10m])
+```
+
+```promql
+bottomk(5, server_ping_milliseconds)
+```
+
+```promql
+histogram_quantile(0.9, sum by (le) (rate(ping_milliseconds_bucket[5m])))
+```
+
+## Examples (pairing metrics to visualizations)
+
+* **Stat panel** – `server_uptime_seconds_total` (Counter)
+* **Time‑series** – `cpu_utilisation_percent` (Gauge)
+* **Bar** – `players_online_total` by `{region}` (Counter)
+* **Gauge** – `server_health_percent` (Gauge)
+* **Pie** – `device_sessions_total` by `{device}` (Counter)
+* **Heatmap** – `player_heatmap_bucket_total` by `{x,z}` (Counter; preferred x/z bucket approach)
+* **Table** – `server_ping_milliseconds` by `{server_id}` (Gauge)
+
+## Retention & limits refresher
+
+* **Retention:** Free (1 day), Standard (7 days), Enterprise (30 days)
+* **Ingestion:** 1 flush per 9s per server (default 10s flush)
+* **Labels:** No hard limits; keep cardinality reasonable
+
+<img
+className="block"
+src="/images/dashboards-overview.png"
+alt="Dashboard panels overview"
+title={true} />

@@ -1,0 +1,57 @@
+---
+
+title: 'Counter'
+description: 'Monotonically increasing totals for events and tallies.'
+---
+
+**Counters** represent totals that only ever go **up** (reset on server restart). Use them for **events** that accumulate: joins, kills, items crafted, Robux spent.
+
+## Create and use
+
+```luau
+local Telemetry = Zyntex:Telemetry(10)
+
+local kills = Telemetry:Counter("enemy_kills_total", {
+    description = "Total enemy kills by weapon",
+    labels = {"weapon"} -- optional, use to slice
+})
+
+-- +1 without labels
+kills:inc()
+
+-- +5 with a weapon label
+kills:inc(5, {weapon = "Sword"})
+```
+
+## Snapshot → delta pattern
+
+Counters expect **deltas**. If you poll a current snapshot and want to convert it into a counter:
+
+```luau
+local shotsCtr = Telemetry:Counter("weapon_shots_total", { labels = {"weapon"} })
+local last = 0
+
+local function pushShots(current)
+    local delta = current - last
+    if delta > 0 then
+        shotsCtr:inc(delta, {weapon = "Bow"})
+        last = current
+    end
+end
+```
+
+<Info>
+  Each `:inc(...)` updates the local running total and pushes it. Feed **deltas** into `:inc` to reflect true growth.
+</Info>
+
+## Best practices
+
+* Prefer names ending in `_total` for clarity.
+* Use labels sparingly (e.g., `{region="NA"}`) to avoid high cardinality.
+* Counters are ideal for **bar**, **pie**, **table**, and **stat** panels.
+
+<img
+className="block"
+src="/images/telemetry-counter.png"
+alt="Counter examples in dashboard"
+title={true} />

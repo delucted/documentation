@@ -1,0 +1,81 @@
+---
+
+title: 'Quickstart'
+description: 'Set up Zyntex Telemetry in minutes.'
+---
+
+## 1) Initialize Zyntex and Telemetry
+
+```luau
+local Zyntex = require(path.to.zyntex)("YOUR-GAME-TOKEN")
+
+Zyntex:init({
+    debug = false;
+})
+
+-- Create a registry. Flushes automatically every 10s by default.
+-- The ingestion limit is 1 flush / 9s per server; 10s is safe.
+local Telemetry = Zyntex:Telemetry(10, "default") -- flushEvery, registryName?
+```
+
+<Note>
+  `flushEvery` defaults to **10 seconds** if omitted. Values **below 10** are rejected.
+</Note>
+
+## 2) Create metrics
+
+```luau
+-- Counter: total players joined
+local joinTotal = Telemetry:Counter("players_joined_total", {
+    description = "Total players that have joined this server"
+})
+
+-- Gauge: server health %
+local serverHealth = Telemetry:Gauge("server_health_percent")
+
+-- Histogram: ping, with custom buckets
+local ping = Telemetry:Histogram("ping_milliseconds", {
+    buckets = {25, 50, 75, 100, 150, 200, 300}
+})
+
+-- Summary: session length minutes
+local session = Telemetry:Summary("session_length_minutes")
+```
+
+## 3) Push samples
+
+```luau
+-- Counters add to a running total
+doublejoin = 2
+joinTotal:inc()            -- +1
+joinTotal:inc(doublejoin)  -- +2
+
+-- Gauges set or adjust the current value
+serverHealth:set(92)
+serverHealth:dec(5)        -- now 87
+
+-- Histograms & Summaries observe raw values
+ping:observe(72)           -- 72 ms
+session:observe(13.4)      -- 13.4 minutes
+```
+
+## 4) Flush (optional)
+
+```luau
+-- Normally not needed, but available if you want to flush immediately:
+Telemetry:flush()
+```
+
+<Warning>
+  Avoid pushing every frame. Prefer **timed intervals** (e.g., every 2–5s) and let the registry manage flushes.
+</Warning>
+
+<Info>
+  **Mini‑PromQL:** You can query your metrics in dashboards using a simplified PromQL. See the **Introduction** page for supported aggregates, functions, and examples, or start with the official **[PromQL documentation](https://prometheus.io/docs/prometheus/latest/querying/basics/)**.
+</Info>
+
+<img
+className="block"
+src="/images/telemetry-quickstart.png"
+alt="Telemetry getting started"
+title={true} />

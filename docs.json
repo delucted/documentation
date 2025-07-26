@@ -28,6 +28,24 @@
                         ]
                     },
                     {
+                        "group": "Functions",
+                        "pages": [
+                            "functions"
+                        ]
+                    },
+                    {
+                        "group": "Telemetry",
+                        "pages": [
+                            "telemetry/intro",
+                            "telemetry/quickstart",
+                            "telemetry/counter",
+                            "telemetry/gauge",
+                            "telemetry/histogram",
+                            "telemetry/summary",
+                            "telemetry/dashboards"
+                        ]
+                    },
+                    {
                         "group": "Logs",
                         "pages": [
                             "logs"

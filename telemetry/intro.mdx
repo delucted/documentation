@@ -1,0 +1,104 @@
+---
+
+title: 'Telemetry'
+description: 'Prometheus-style game metrics for Zyntex: counters, gauges, histograms, and summaries.'
+---
+
+Telemetry lets you stream structured metrics from your Roblox servers to Zyntex for analysis and dashboards. Use it for **live health**, **feature KPIs**, **economy tracking**, **heatmaps**, and more.
+
+## How it works
+
+* You create a **Telemetry registry** from the SDK and define **metrics** (Counter, Gauge, Histogram, Summary).
+* Each metric pushes **samples** into a small client-side buffer.
+* Zyntex **flushes** that buffer automatically every `flushEvery` seconds (default **10s**) or when you call `:flush()` manually.
+
+<Note>
+  The ingestion limit is **1 flush per 9 seconds per server**. The default flush period (**10s**) keeps you under this limit.
+</Note>
+
+### Plans, retention & resolution
+
+Telemetry samples are retained according to your plan:
+
+* **Free:** 1 day
+* **Standard:** 7 days
+* **Enterprise:** 30 days
+
+<Info>
+  Zyntex may downsample/aggregate visually for longer time ranges in dashboards. Raw sample retention follows the limits above.
+</Info>
+
+### Labels & cardinality
+
+* **No enforced label limits** – but keep label **cardinality** reasonable for fast queries and clean charts.
+* Zyntex automatically injects a `server_id` label for every telemetry sample.
+
+---
+
+## Query language (Mini‑PromQL)
+
+Zyntex supports a **simplified PromQL** ("Mini‑PromQL") with most operators you need for game metrics. If you know PromQL, this will feel familiar. See the full PromQL docs here: **[PromQL documentation](https://prometheus.io/docs/prometheus/latest/querying/basics/)**.
+
+**Supported aggregates**: `sum`, `avg`, `min`, `max` (with optional `by(...)` / `without(...)`).
+
+**Functions**: `rate`, `avg_over_time`, `sum_over_time`, `min_over_time`, `max_over_time`, `topk`, `bottomk`, `histogram_quantile`.
+
+**Selectors**: instant vectors like `metric{label="value"}` and range vectors like `metric{label="value"}[5m]`.
+
+**Examples**
+
+```promql
+sum by (region) (rate(players_online_total[5m]))
+```
+
+```promql
+avg_over_time(cpu_utilisation_percent{core="Main"}[10m])
+```
+
+```promql
+histogram_quantile(0.9, sum by (le) (rate(ping_milliseconds_bucket[5m])))
+```
+
+<Note>
+  Mini‑PromQL intentionally omits some advanced PromQL features to keep queries fast and simple, while covering common game‑telemetry needs.
+</Note>
+
+---
+
+## Metrics at a glance
+
+* **Counter:** Monotonically increasing totals (e.g., `players_joined_total`, `robux_spent_total`).
+* **Gauge:** Values that go **up/down** (e.g., `cpu_utilisation_percent`, `server_health_percent`).
+* **Histogram:** Distributions with optional **buckets** (e.g., ping, damage). If you omit `buckets`, Zyntex applies backend bucketing that may evolve over time.
+* **Summary:** Distribution summaries optimized for **percentiles** (p50/p90/p99).
+
+<Info>
+  **Naming:** Prefer `snake_case` and include units, e.g. `server_uptime_seconds_total`, `ping_milliseconds`. Use labels (e.g., `{region="NA"}`) for slicing.
+</Info>
+
+---
+
+## Minimal setup
+
+```luau
+local Zyntex = require(path.to.zyntex)("YOUR-GAME-TOKEN")
+
+Zyntex:init({
+    debug = false;
+})
+
+-- Create a registry. Flushes every 10s by default (≥ 10s required).
+local Telemetry = Zyntex:Telemetry(10, "default")
+
+-- Define a counter
+local joins = Telemetry:Counter("players_joined_total", {
+    description = "Total players that have joined this server"
+})
+
+-- Push a sample
+joins:inc() -- +1
+```
+
+<Warning>
+  Avoid pushing every frame. Prefer **fixed intervals** (e.g., every 2–5s) and let the registry flush on its own.
+</Warning>

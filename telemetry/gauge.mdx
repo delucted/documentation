@@ -1,0 +1,37 @@
+---
+
+title: 'Gauge'
+description: 'Instantaneous values that go up and down (e.g., CPU %, FPS, health).'
+---
+
+**Gauges** capture a **point‑in‑time** value that may increase or decrease.
+
+## Create and use
+
+```luau
+local Telemetry = Zyntex:Telemetry(10)
+
+local cpu = Telemetry:Gauge("cpu_utilisation_percent")
+local health = Telemetry:Gauge("server_health_percent")
+
+-- Absolute set
+cpu:set(43.2, {core = "Main"})
+
+-- Relative changes (applied as deltas)
+health:dec(5)   -- -5
+health:inc(2)   -- +2
+```
+
+<Note>
+  `:set(value)` sets an absolute reading. `:inc(delta)` / `:dec(delta)` record a **delta**. Use `:set` for most gauges to avoid drift.
+</Note>
+
+## Typical use cases
+
+* Performance: `server_fps`, `memory_mb`, `cpu_utilisation_percent`
+* Live sentiment/health: `server_health_percent`
+* Current concurrent: `players_online` (instantaneous)
+
+## Dashboard fit
+
+* **Time‑series line**, **single value gauge**, **table** by label (e.g., `{server_id}`).
