@@ -46,6 +46,13 @@
                         ]
                     },
                     {
+                        "group": "Experiments",
+                        "pages": [
+                            "experiments/intro",
+                            "experiments/quickstart"
+                        ]
+                    },
+                    {
                         "group": "Logs",
                         "pages": [
                             "logs"

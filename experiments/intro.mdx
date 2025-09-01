@@ -1,0 +1,43 @@
+---
+title: 'Experiments'
+description: 'Learn what experiments are and what they offer on Zyntex.'
+---
+
+Experiments (also known as A/B Tests) are a crucial Zyntex feature. They allow you to run experiments on your game to test different features and see which one performs better.
+
+## Use cases
+
+1. **UI/UX decisions:** Test two different shop layouts, button placements, or HUD designs to see which version players engage with more.
+2. **Monetization tuning:** Compare different product prices, gamepass bundles, or Robux offers to maximize conversions without guessing.
+3. **Onboarding & retention:** Try alternate tutorials or first-time player experiences and measure which flow gets more players to return.
+4. **Game balance:** Adjust weapon stats, XP curves, or difficulty scaling between groups to find the “sweet spot” for fun and fairness.
+5. **Event & feature launches:** Soft-roll new events or systems (like quests or progression tracks) to only half your servers, so you can measure impact and catch issues before a full release.
+
+## Experiment terminology
+
+### Group
+A group is a single group that is part of an experiment. Typically, there is a Control group and a Test group.
+
+### Entry
+An entry is a log of a player entering an experiment. For example, if a player opens the shop, that would be registered as an entry.
+
+### Conversion
+A conversion is a log of a player converting on an experiment. For example, if a player buys a product, that would be registered as a conversion.
+
+## Experiment flow
+
+The experiment flow is as follows:
+1. A player enters the game.
+2. The player is assigned to a group via random assignment.
+3. If the player performs an action that is registered as a conversion, that would be registered as a conversion. Otherwise, it is registered as an entry without conversion.
+4. The results are aggregated and analyzed on the dashboard to determine which group performs better.
+
+## Experiment duration
+
+It is recommended to run experiments for a duration of at least a week to ensure that the results are statistically significant.
+
+## Experiment best practices
+
+1. **Run an A/A test:** Before running an experiment, it is recommended to run a simple A/A test to ensure your setup is working properly. An A/A test is a test where you run the same experiment on two of the same group, so if the results are widely different, that suggests you have an issue with your setup.
+2. **Use a large enough sample size:** The larger the sample size, the more statistically significant the results will be.
+3. **Use a large enough duration:** The longer the experiment runs, the more statistically significant the results will be. It is best practice to keep an experiment running for at least a week.
